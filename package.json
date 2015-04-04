@@ -11,6 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "react": "^0.13.1",
-    "reapp-kit": "^1.0.14"
+    "reapp-kit": "^1.1.0"
   }
 }
