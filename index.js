@@ -22,17 +22,13 @@ actions('addPost', (title, content) => {
   })
 });
 
-const Article = Reapp(class extends React.Component {
+class Article extends React.Component {
   render() {
-    console.log(this.store().get('posts').toJS())
     return (
       <List>
         {this.store().get('posts').map(id => {
           const post = this.store().get('post').get(id);
-          console.log('post', post)
-
-          if (post)
-            return <ArticleItem post={post} />;
+          return <ArticleItem post={post} />;
         })}
         <Button fullscreen onTap={this.actions.addPost}>
           Add Post
@@ -40,7 +36,7 @@ const Article = Reapp(class extends React.Component {
       </List>
     );
   }
-})
+}
 
 class ArticleItem extends React.Component {
   render() {
@@ -53,5 +49,5 @@ class ArticleItem extends React.Component {
 }
 
 router(
-  route('articles', '/', { handler: Article })
+  route('articles', '/', { handler: Reapp(Article) })
 );
