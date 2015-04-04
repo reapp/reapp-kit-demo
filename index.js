@@ -15,23 +15,26 @@ store({
 const storeCursor = store();
 
 actions('addPost', (title, content) => {
-  const id = Math.random();
+  const id = Math.round(Math.random() * 1000);
   storeCursor().withMutations(store => {
     store.setIn(['post', id], Immutable.fromJS({ title: 'Another', content: 'Lorem' }));
-    store.set('posts', store.get('posts').push(''+id));
+    store.set('posts', store.get('posts').push(id));
   })
 });
 
 const Article = Reapp(class extends React.Component {
   render() {
+    console.log(this.store().get('posts').toJS())
     return (
       <List>
-        {this.context.store().get('posts').map(id => {
-          const post = this.context.store().getIn(['post', id]);
-          console.log('post', post, post.toJS())
-          return <ArticleItem post={post} />;
+        {this.store().get('posts').map(id => {
+          const post = this.store().get('post').get(id);
+          console.log('post', post)
+
+          if (post)
+            return <ArticleItem post={post} />;
         })}
-        <Button fullscreen onTap={this.context.actions.addPost}>
+        <Button fullscreen onTap={this.actions.addPost}>
           Add Post
         </Button>
       </List>
