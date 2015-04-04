@@ -12,11 +12,9 @@ store({
   posts: ['1']
 });
 
-const storeCursor = store();
-
 actions('addPost', (title, content) => {
-  const id = Math.round(Math.random() * 1000);
-  storeCursor().withMutations(store => {
+  store().withMutations(store => {
+    const id = Math.random();
     store.setIn(['post', id], Immutable.fromJS({ title: 'Another', content: 'Lorem' }));
     store.set('posts', store.get('posts').push(id));
   })
@@ -26,10 +24,11 @@ class Article extends React.Component {
   render() {
     return (
       <List>
-        {this.store().get('posts').map(id => {
-          const post = this.store().get('post').get(id);
-          return <ArticleItem post={post} />;
-        })}
+        {this.store().get('posts').map(id =>
+          <ArticleItem
+            post={this.store().getIn(['post', id])}
+          />
+        )}
         <Button fullscreen onTap={this.actions.addPost}>
           Add Post
         </Button>
