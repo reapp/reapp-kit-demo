@@ -1,4 +1,4 @@
-import { React, Reapp, List, Button, Cursor, router, store, actions } from 'reapp-kit';
+import { React, Reapp, List, Button, router, store, actions } from 'reapp-kit';
 
 store({
   post: { 1: { title: 'Hello World', content: 'Lorem Ipsum' } },
@@ -13,7 +13,7 @@ actions('addPost', (title, content) => {
   })
 });
 
-const Article = Cursor(['posts', 'post'], ArticleComponent);
+const Article = store.cursor(['posts', 'post'], ArticleComponent);
 class ArticleComponent extends React.Component {
   render() {
     return (
