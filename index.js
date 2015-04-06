@@ -14,7 +14,7 @@ actions('addPost', (title, content) => {
 });
 
 const Article = Cursor(['posts', 'post'], ArticleComponent);
-class ArticleComponent extends Reapp.Component {
+class ArticleComponent extends React.Component {
   render() {
     return (
       <List>
