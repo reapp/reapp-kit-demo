@@ -15,14 +15,14 @@ action('addPost', (title, content) => {
 });
 
 // higher order component to pass cursor down
-const Article = store.cursor(['posts', 'post'], class {
+const Article = store.cursor(['posts', 'post'], class extends React.Component {
   render() {
     return (
       <List>
         {this.props.posts.map(id =>
           <ArticleItem post={this.props.post.get(id)} />
         )}
-        <Button onTap={action.addPost}>Add Post</Button>
+        <Button onTap={this.action.addPost}>Add Post</Button>
       </List>
     );
   }
