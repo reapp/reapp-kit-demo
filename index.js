@@ -1,31 +1,32 @@
-import { React, Reapp, List, Button, router, store, actions } from 'reapp-kit';
+import { React, Reapp, List, Button, Immutable, router, store, action, theme } from 'reapp-kit';
+theme(require('reapp-kit/themes/ios'));
 
 store({
   post: { 1: { title: 'Hello World', content: 'Lorem Ipsum' } },
   posts: ['1']
 });
 
-actions('addPost', (title, content) => {
+action('addPost', (title, content) => {
   const id = Math.random();
   store().withMutations(store => {
-    store.setIn(['post', id], { title: 'Another', content: 'Lorem' });
-    store.get('posts').push(id);
-  })
+    store.setIn(['post', id], Immutable.fromJS({ title: 'Another', content: 'Lorem' }));
+    store.set('posts', store.get('posts').push(id));
+  });
 });
 
-const Article = store.cursor(['posts', 'post'], ArticleComponent);
-class ArticleComponent extends React.Component {
+// higher order component to pass cursor down
+const Article = store.cursor(['posts', 'post'], class {
   render() {
     return (
       <List>
         {this.props.posts.map(id =>
           <ArticleItem post={this.props.post.get(id)} />
         )}
-        <Button onTap={actions.addPost}>Add Post</Button>
+        <Button onTap={action.addPost}>Add Post</Button>
       </List>
     );
   }
-}
+})
 
 class ArticleItem {
   render() {
@@ -37,4 +38,4 @@ class ArticleItem {
   }
 }
 
-router({ path: '/', handler: Reapp(Article) });
+router({ name: 'home', path: '/', handler: Reapp(Article) });
